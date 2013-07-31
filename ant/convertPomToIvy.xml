@@ -1,0 +1,25 @@
+<project name="convertPomToIvy" basedir="." default="convert"
+  xmlns:ivy="antlib:fr.jayasoft.ivy.ant"
+  xmlns:ac="antlib:net.sf.antcontrib">
+
+  <path id="antlib.classpath">
+    <fileset dir="../jar" includes="ivy-*.jar"/>
+  </path>
+
+  <taskdef uri="antlib:fr.jayasoft.ivy.ant"
+	resource="fr/jayasoft/ivy/ant/antlib.xml"
+	classpathref="antlib.classpath"
+	loaderref="antlib.classpath.loader"/>
+
+  <target name="convert">
+    <ivy:convertpom pomFile="pom.xml" ivyFile="ivy.xml" />
+  </target>
+
+  <target name"ivy-to-pom">
+    <ivy:makepom ivyfile="${basedir}/path/to/ivy.xml" pomfile="${basedir}/path/to/module.pom" conf="default,runtime">
+      <mapping conf="default" scope="compile"/>
+      <mapping conf="runtime" scope="runtime"/>
+      <dependency group="com.acme" artifact="acme-logging" version="1.0" optional="true"/>
+    </ivy:makepom>
+  </target>
+</project>

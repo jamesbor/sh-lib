@@ -1,0 +1,45 @@
+<project name="IvyAndMavenTools" default="info"
+  xmlns:ivy="antlib:fr.jayasoft.ivy.ant"
+  xmlns:ac="antlib:net.sf.antcontrib">
+<!-- 		<property environment="env"/>		-->
+<!--${basedir}
+${env.PWD} -->
+
+  <path id="antlib.classpath">
+    <fileset dir="${basedir}/../jar" includes="ivy-2.*.jar"/>
+  </path>
+
+  <taskdef uri="antlib:fr.jayasoft.ivy.ant"
+	resource="fr/jayasoft/ivy/ant/antlib.xml"
+	classpathref="antlib.classpath"
+	loaderref="antlib.classpath.loader"/>
+
+  <target name="info">
+    <echo>
+ Please execute this ant script with the following two propertys set:
+ ivyFile - The Apache Ivy file you either want to read or output to
+ pomFile - The Maven POM file you either want to read or output to
+
+ These are passed in as follow:
+   -DivyFile=/a/ivy/file.xml -DpomFile=/a/pom/file.pom
+
+ Finally, issue the mode you wish to run in.  Either 'pom-to-ivy' or 'ivy-to-pom'
+ so an example execution would be:
+   $ ant -fIvyAndMavenTools.xml -DivyFile=ivy.xml -DpomFile=pom.xml ivy-to-pom
+
+    </echo>
+  </target>
+
+  <target name="pom-to-ivy">
+    <ivy:convertpom pomFile="${pomFile}" ivyFile="${ivyFile}" />
+    <!-- <ivy:convertpom pomFile="${env.PWD}/${pomFile}" ivyFile="${env.PWD}/${ivyFile}" /> -->
+  </target>
+
+  <target name="ivy-to-pom">
+    <ivy:makepom ivyfile="${ivyFile}" pomfile="${pomFile}" conf="default,runtime">
+      <mapping conf="default" scope="compile"/>
+      <mapping conf="runtime" scope="runtime"/>
+      <dependency group="com.acme" artifact="acme-logging" version="1.0" optional="true"/>
+    </ivy:makepom>
+  </target>
+</project>
