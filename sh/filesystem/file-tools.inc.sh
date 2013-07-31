@@ -170,3 +170,11 @@ set_file_datetime_epoch()
     touch -t "${DATETIME}" "${FILE_TO_UPDATE}"
 }
 
+get_files_containing()
+{
+    test_number_args 2 "$@"		|| return $?
+    local STRING_TO_FIND="${1}"
+    local PATH_TO_SEARCH="${2}"
+    grep -H -R ${STRING_TO_FIND} ${PATH_TO_SEARCH} | awk -F: '{print $1}'
+    
+}
